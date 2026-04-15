@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>个人简历</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+
+        /* 页面父容器：相对定位，用于子绝居中 */
+        body {
+            position: relative;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        /* 简历主体：绝对定位 + 上下左右居中 */
+        .resume {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        /* 标题 */
+        .resume-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* 行样式 */
+        .row {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* 最后一行去掉下划线 */
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        /* 标签样式 */
+        .label {
+            width: 120px;
+            background-color: #e6e6e6;
+            font-weight: bold;
+            padding: 12px;
+            border-right: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 内容样式 */
+        .content {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 照片容器 */
+        .photo-box {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-left: 10px;
+        }
+
+        /* 照片 */
+        .photo {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+
+        /* 播放按钮：默认隐藏 */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* 鼠标悬浮照片：透明度0.5 + 显示按钮 */
+        .photo-box:hover .photo {
+            opacity: 0.5;
+        }
+        .photo-box:hover .play-btn {
+            display: flex;
+        }
+
+        /* 固定定位广告 */
+        .ad {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 120px;
+            height: 300px;
+            background: #ff4444;
+            color: #fff;
+            text-align: center;
+            line-height: 300px;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 固定定位广告 -->
+    <div class="ad">招聘广告</div>
+
+    <!-- 简历主体：绝对定位居中 -->
+    <div class="resume">
+        <div class="resume-title">个人简历</div>
+
+        <!-- 第一行 -->
+        <div class="row">
+            <div class="label">姓名</div>
+            <div class="content">周宇</div>
+            <div class="label">性别</div>
+            <div class="content">男</div>
+            <div class="label">年龄</div>
+            <div class="content">20</div>
+            <!-- 照片 -->
+            <div class="photo-box">
+                <img src="photos.jpg" class="photo" alt="照片">
+                <div class="play-btn">▶</div>
+            </div>
+        </div>
+
+        <!-- 第二行 -->
+        <div class="row">
+            <div class="label">籍贯</div>
+            <div class="content">汉族</div>
+            <div class="label">联系电话</div>
+            <div class="content">19862232902</div>
+            <div class="label">电子邮箱</div>
+            <div class="content">13173235705@163.com</div>
+        </div>
+
+        <!-- 第三行 -->
+        <div class="row">
+            <div class="label">学历</div>
+            <div class="content">本科</div>
+            <div class="label">健康状况</div>
+            <div class="content">健康</div>
+            <div class="label">婚姻状况</div>
+            <div class="content">未婚</div>
+        </div>
+
+        <!-- 第四行 -->
+        <div class="row">
+            <div class="label">求职意向</div>
+            <div class="content">无</div>
+            <div class="label">专业</div>
+            <div class="content" style="flex:2;">计算机科学与技术</div>
+            <div class="label">毕业院校</div>
+            <div class="content">烟台理工学院</div>
+        </div>
+
+        <!-- 技能证书 -->
+        <div class="row">
+            <div class="label">技能证书</div>
+            <div class="content" style="flex:6;">软考网络工程师</div>
+        </div>
+
+        <!-- 特长爱好 -->
+        <div class="row">
+            <div class="label">个人特长与爱好</div>
+            <div class="content" style="flex:6;">热爱编程，喜欢阅读技术书籍</div>
+        </div>
+
+        <!-- 项目经历 -->
+        <div class="row">
+            <div class="label">项目经历</div>
+            <div class="content" style="flex:6; height:80px;">无</div>
+        </div>
+
+        <!-- 自我评价 -->
+        <div class="row">
+            <div class="label">自我评价</div>
+            <div class="content" style="flex:6; height:120px; line-height:1.6;">
+                本人学习态度端正，对待网络技术专业知识认真严谨，具备扎实的网络基础与实操能力，熟悉交换机、路由器配置及常见网络协议。在备赛过程中能够主动刷题复盘，及时查漏补缺，对错题善于总结反思，学习效率较高。做事细心稳重，遇到问题能冷静分析排查，具备良好的逻辑思维与自学能力。团队协作意识较强，能听从安排、积极沟通。今后将继续强化薄弱知识点，提升综合排障能力，以更严谨的态度对待专业学习，不断提升自身技术水平与综合素养。
+            </div>
+        </div>
+    </div>
+</body>
+</html>
