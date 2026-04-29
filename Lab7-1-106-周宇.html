@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美丽烟台理工校园</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 页面整体样式 */
+        body {
+            background-color: #f5f7fa;
+            padding-bottom: 80px; /* 防止内容被固定页脚遮挡 */
+        }
+
+        /* 头部标题 */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(to right, #2c7be5, #38b1ff);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+      
+        .grid-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+       
+        .theme-title {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 3px solid #2c7be5;
+            transition: all 0.4s ease;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: all 0.4s ease;
+        }
+
+        .card p {
+            padding: 12px;
+            text-align: center;
+            color: #555;
+            font-size: 15px;
+        }
+
+        
+        #theme1 .theme-title:hover {
+            transform: rotate(45deg);
+            color: #2c7be5;
+            cursor: pointer;
+        }
+
+        /* 第一行图片悬浮：放大1.5倍 */
+        #theme1 .card img:hover {
+            transform: scale(1.5);
+        }
+
+       
+       
+        #theme2 {
+            position: relative;
+            height: 450px;
+            border: 2px dashed #666;
+            padding: 20px;
+            background: #fff5f5;
+        }
+
+        
+        #theme2 .card {
+            position: absolute;
+            width: 30%;
+        }
+
+        /* 第一行 */
+        #theme2 .card:nth-child(2) { top: 80px; left: 2%; }
+        #theme2 .card:nth-child(3) { top: 80px; left: 35%; }
+        #theme2 .card:nth-child(4) { top: 80px; left: 68%; }
+
+       
+        #theme2 .card:nth-child(5) { top: 250px; left: 2%; }
+        #theme2 .card:nth-child(6) { top: 250px; left: 35%; }
+        #theme2 .card:nth-child(7) { top: 250px; left: 68%; }
+
+       
+        #theme2 .card:nth-child(n+5) img:hover {
+            transform: skew(30deg);
+        }
+
+       
+        #theme3 .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+       
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <h1>美丽烟台理工校园</h1>
+    </header>
+
+    <!-- 第一主题：校园风光 -->
+    <div id="theme1" class="grid-container">
+        <h2 class="theme-title">主题一：校园风光</h2>
+        <div class="card"><img src="https://picsum.photos/600/400?random=1" alt="校园风光"><p>校园正门</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=2" alt="校园风光"><p>中心花园</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=3" alt="校园风光"><p>湖畔美景</p></div>
+    </div>
+
+    <!-- 第二主题：教学设施（父相子绝） -->
+    <div id="theme2" class="grid-container">
+        <h2 class="theme-title">主题二：教学设施</h2>
+        <div class="card"><img src="https://picsum.photos/600/400?random=4" alt="教学楼"><p>主教学楼</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=5" alt="实验室"><p>智能实验室</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=6" alt="图书馆"><p>图书馆</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=7" alt="多媒体教室"><p>多媒体教室</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=8" alt="实训中心"><p>实训中心</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=9" alt="报告厅"><p>学术报告厅</p></div>
+    </div>
+
+    <!-- 第三主题：校园生活 -->
+    <div id="theme3" class="grid-container">
+        <h2 class="theme-title">主题三：校园生活</h2>
+        <div class="card"><img src="https://picsum.photos/600/400?random=10" alt="食堂"><p>学生食堂</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=11" alt="宿舍"><p>学生公寓</p></div>
+        <div class="card"><img src="https://picsum.photos/600/400?random=12" alt="运动场"><p>运动场</p></div>
+    </div>
+
+    <!-- 固定页脚 -->
+    <footer>
+        <p>烟台理工学院 © 2025 美丽校园展示页 | 固定定位页脚</p>
+    </footer>
+</body>
+</html>
