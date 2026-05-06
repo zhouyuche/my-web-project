@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6张照片绕X轴旋转</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* 3D 舞台 */
+  .stage {
+    width: 1000px;
+    height: 400px;
+    perspective: 1600px;
+  }
+
+  /* 旋转盒子 + 过渡动画 */
+  .box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 12s ease; /* 过渡属性 */
+  }
+
+  /* 图片样式 */
+  .item {
+    position: absolute;
+    width: 240px;
+    height: 340px;
+    left: 50%;
+    top: 50%;
+    margin-left: -120px;
+    margin-top: -170px;
+    object-fit: cover;
+    border-radius: 6px;
+    backface-visibility: hidden;
+  }
+
+  /* 6张图均匀绕X轴排列，无遮挡 */
+  .item1 { transform: rotateX(0deg) translateZ(360px); }
+  .item2 { transform: rotateX(60deg) translateZ(360px); }
+  .item3 { transform: rotateX(120deg) translateZ(360px); }
+  .item4 { transform: rotateX(180deg) translateZ(360px); }
+  .item5 { transform: rotateX(240deg) translateZ(360px); }
+  .item6 { transform: rotateX(300deg) translateZ(360px); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="box" id="box">
+    <img src="1.jpg" class="item item1">
+    <img src="2.jpg" class="item item2">
+    <img src="3.jpg" class="item item3">
+    <img src="4.jpg" class="item item4">
+    <img src="5.jpg" class="item item5">
+    <img src="6.jpg" class="item item6">
+  </div>
+</div>
+
+<script>
+  // 页面一加载 立即旋转 6周 = 2160度
+  window.onload = function () {
+    const box = document.getElementById('box');
+    box.style.transform = 'rotateX(2160deg)';
+  };
+</script>
+
+</body>
+</html>
