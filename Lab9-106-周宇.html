@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>个人信息登记表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eef2f7;
+            padding: 30px 20px;
+        }
+
+        .form-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* 左右Flex布局，彻底解决照片错位 */
+        .form-layout {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px 32px 32px 32px;
+            gap: 30px;
+        }
+
+        .form-main-area {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* 右侧照片区（独立不浮动） */
+        .photo-area {
+            width: 220px;
+            flex-shrink: 0;
+            background: #fafbfc;
+            border-radius: 16px;
+            padding: 20px 12px 20px 12px;
+            border: 1px solid #e9edf2;
+            align-self: flex-start;
+            text-align: center;
+        }
+
+        .photo-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 14px;
+            border-left: 3px solid #409eff;
+            padding-left: 10px;
+            text-align: left;
+        }
+
+        .photo-box {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            max-width: 180px;
+            margin: 0 auto 14px auto;
+            border: 1px solid #dcdfe6;
+            border-radius: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .upload-btn-wrapper {
+            margin-top: 6px;
+        }
+
+        .custom-upload {
+            display: inline-block;
+            background: #ecf5ff;
+            border: 1px solid #c6e2ff;
+            color: #409eff;
+            border-radius: 24px;
+            padding: 6px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .custom-upload:hover {
+            background: #d9ecff;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .global-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e2a3a;
+            padding: 20px 0 0 0;
+        }
+
+        .global-title span {
+            background: linear-gradient(135deg, #2c6b9e, #409eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* ========= fieldset 基础样式 ========= */
+        fieldset {
+            border: 1px solid #e9edf4;
+            border-radius: 18px;
+            padding: 18px 22px 22px 22px;
+            margin-bottom: 24px;
+            background: #ffffff;
+            transition: box-shadow 0.2s;
+        }
+
+        legend {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2c6b9e;
+            background: #fff;
+            padding: 0 14px;
+            width: auto;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            line-height: 34px;
+        }
+
+        /* 统一表单项内部布局 */
+        .form-row-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;   /* 全局行间距收紧，原为20px现在更紧凑 */
+        }
+
+        .row-3col {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;   /* 三列之间间距稍微缩小 */
+            width: 100%;
+        }
+
+        .form-item {
+            display: flex;
+            align-items: center;
+            flex: 1 1 280px;
+            min-width: 250px;
+        }
+
+        .form-item label {
+            width: 106px;
+            height: 42px;
+            line-height: 42px;
+            background: #f0f2f6;
+            border: 1px solid #e2e7ed;
+            border-radius: 10px 0 0 10px;
+            font-weight: 600;
+            font-size: 13.5px;
+            text-align: center;
+            color: #1f2d3d;
+            flex-shrink: 0;
+        }
+
+        .form-item input,
+        .form-item select {
+            flex: 1;
+            height: 42px;
+            line-height: 42px;
+            border: 1px solid #e2e7ed;
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+            padding: 0 12px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .form-item input:focus,
+        .form-item select:focus {
+            outline: none;
+            border-color: #409eff;
+        }
+
+        /* 全宽表单项 (特长/项目经历等) */
+        .form-item-full {
+            display: flex;
+            width: 100%;
+        }
+        .form-item-full label {
+            width: 106px;
+            height: auto;
+            min-height: 42px;
+            line-height: 42px;
+            background: #f0f2f6;
+            border: 1px solid #e2e7ed;
+            border-radius: 10px 0 0 10px;
+            font-weight: 600;
+            font-size: 13.5px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .form-item-full textarea {
+            flex: 1;
+            border: 1px solid #e2e7ed;
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+            padding: 10px 12px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .form-item-full textarea:focus {
+            outline: none;
+            border-color: #409eff;
+        }
+
+        /* ----- 紧凑微调：针对技能证书分组里特别缩小内外边距 ----- */
+        /* 所有fieldset内紧凑处理，但技能证书组额外更进一步压缩（可选统一控制）*/
+        .compact-fieldset {
+            padding: 14px 20px 18px 20px;
+        }
+        /* 让技能证书组的 .form-row-group 行距最小 */
+        .compact-gap .form-row-group {
+            gap: 8px;   /* 关键调整：将行之间从14px降为8px，更紧致 */
+        }
+        /* 并且内部表单项上下外边距归零 */
+        .compact-gap .form-item,
+        .compact-gap .form-item-full {
+            margin-bottom: 0;
+        }
+        /* 为了维持统一风格，保证第二组（项目经历和自我评价）舒适，不强制压缩全部，但技能证书组单独添加类 */
+        
+        .action-buttons {
+            text-align: center;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+        .btn {
+            padding: 9px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: 0.2s;
+        }
+        .btn-primary {
+            background: #409eff;
+            color: white;
+            box-shadow: 0 2px 5px rgba(64,158,255,0.3);
+        }
+        .btn-primary:hover {
+            background: #2c6b9e;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: #e9edf2;
+            color: #4a5b6e;
+        }
+        .btn-secondary:hover {
+            background: #dce2ea;
+        }
+
+        @media (max-width: 860px) {
+            .form-layout {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .photo-area {
+                width: 100%;
+                max-width: 260px;
+                margin: 0 auto;
+                order: 0;
+            }
+            .form-main-area {
+                order: 1;
+            }
+            .row-3col {
+                gap: 12px;
+            }
+            .form-item {
+                min-width: 100%;
+            }
+            fieldset {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div class="global-title">
+        <span>📄 个人信息登记表</span>
+    </div>
+    <div class="form-layout">
+        <!-- 左侧表单主体 -->
+        <div class="form-main-area">
+            <form id="personalForm" action="#" method="post">
+                <!-- 1. 基本信息 -->
+                <fieldset>
+                    <legend>📋 基本信息</legend>
+                    <div class="form-row-group">
+                        <div class="row-3col">
+                            <div class="form-item"><label>姓名</label><input type="text" name="name" value="周宇" required></div>
+                            <div class="form-item"><label>性别</label><select name="gender"><option value="男" selected>男</option><option value="女">女</option></select></div>
+                            <div class="form-item"><label>年龄</label><input type="number" name="age" value="20" required></div>
+                        </div>
+                        <div class="row-3col">
+                            <div class="form-item"><label>民族</label><input type="text" name="nation" value="汉族"></div>
+                            <div class="form-item"><label>联系电话</label><input type="tel" name="phone" value="19862232902" required></div>
+                            <div class="form-item"><label>电子邮箱</label><input type="email" name="email" value="13173235705@163.com" required></div>
+                        </div>
+                        <div class="row-3col">
+                            <div class="form-item"><label>婚姻状况</label><select name="marry"><option value="未婚" selected>未婚</option><option value="已婚">已婚</option></select></div>
+                            <div class="form-item"><label>健康状况</label><input type="text" name="health" value="健康"></div>
+                            <div class="form-item"><label>出生日期</label><input type="text" name="birth" placeholder="2000-01-01" value="2006-03-15"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 2. 教育背景 -->
+                <fieldset>
+                    <legend>🎓 教育背景</legend>
+                    <div class="form-row-group">
+                        <div class="row-3col">
+                            <div class="form-item"><label>学历</label><select name="education"><option value="本科" selected>本科</option><option value="专科">专科</option><option value="硕士">硕士</option><option value="博士">博士</option></select></div>
+                            <div class="form-item"><label>专业</label><input type="text" name="major" value="计算机科学与技术"></div>
+                            <div class="form-item"><label>毕业院校</label><input type="text" name="school" value="烟台理工学院"></div>
+                        </div>
+                        <div class="row-3col">
+                            <div class="form-item"><label>毕业时间</label><input type="text" name="graduation" value="2028年6月"></div>
+                            <div class="form-item"><label>在校荣誉</label><input type="text" name="honor" value="无"></div>
+                            <div class="form-item"><label>外语水平</label><input type="text" name="language" value="CET-4"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 3. 技能证书与特长 —— 此处收紧间距：增加自定义class compact-fieldset + compact-gap -->
+                <fieldset class="compact-fieldset">
+                    <legend>🏅 技能证书与特长</legend>
+                    <div class="form-row-group" style="gap: 8px;">   <!-- 内联样式保障紧凑，同时保留类也可 -->
+                        <!-- 技能证书 单行 + 求职意向 + 特长爱好 压缩上下间距 -->
+                        <div class="form-item">
+                            <label>技能证书</label>
+                            <input type="text" name="cert" value="软考网络工程师">
+                        </div>
+                        <div class="form-item">
+                            <label>求职意向</label>
+                            <input type="text" name="job" value="网络工程师 / 数通方向">
+                        </div>
+                        <div class="form-item-full">
+                            <label>个人特长与爱好</label>
+                            <textarea name="hobby" rows="2">热爱编程，喜欢阅读技术书籍，熟悉网络协议分析，热衷eNSP模拟实验。</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- 4. 项目经历及自我评价（保持正常舒适间距） -->
+                <fieldset>
+                    <legend>💼 项目经历与自我评价</legend>
+                    <div class="form-row-group">
+                        <div class="form-item-full">
+                            <label>项目经历</label>
+                            <textarea name="project" rows="3">1. 校园网络拓扑规划：使用eNSP设计三层架构网络，配置VLAN、OSPF，实现跨区域通信。
+2. 企业网络模拟部署：配置ACL、NAT及链路聚合，提高网络可靠性。
+3. SDN基础实验：通过Mininet搭建自定义拓扑，熟悉OpenFlow协议。</textarea>
+                        </div>
+                        <div class="form-item-full">
+                            <label>自我评价</label>
+                            <textarea name="self" rows="4">本人学习态度端正，对待网络技术专业知识认真严谨，具备扎实的网络基础与实操能力，熟悉交换机、路由器配置及常见网络协议。在备赛过程中能够主动刷题复盘，及时查漏补缺，对错题善于总结反思，学习效率较高。做事细心稳重，遇到问题能冷静分析排查，具备良好的逻辑思维与自学能力。团队协作意识较强，能听从安排、积极沟通。</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="action-buttons">
+                    <button type="submit" class="btn btn-primary">✅ 提交信息</button>
+                    <button type="reset" class="btn btn-secondary">⟳ 重置表单</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 右侧照片区域 -->
+        <div class="photo-area">
+            <div class="photo-title">📸 证件照片</div>
+            <div class="photo-box" id="photoPreviewBox">
+                <img id="profilePhoto" src="photos.jpg" alt="证件照" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22240%22%20viewBox%3D%220%200%20180%20240%22%3E%3Crect%20width%3D%22180%22%20height%3D%22240%22%20fill%3D%22%23f4f6fa%22%2F%3E%3Ctext%20x%3D%2290%22%20y%3D%22120%22%20font-size%3D%2212%22%20fill%3D%22%23999%22%20text-anchor%3D%22middle%22%3E暂无照片%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            </div>
+            <div class="upload-btn-wrapper">
+                <label for="photoInput" class="custom-upload">🖼️ 选择照片</label>
+                <input type="file" id="photoInput" accept="image/jpeg,image/png,image/jpg">
+            </div>
+            <div style="font-size: 12px; color: #8c9aaf; margin-top: 12px;">支持 JPG/PNG<br>建议尺寸 3:4</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const photoInput = document.getElementById('photoInput');
+        const profileImg = document.getElementById('profilePhoto');
+        if (photoInput && profileImg) {
+            photoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImg.src = e.target.result;
+                        profileImg.style.objectFit = 'cover';
+                    };
+                    reader.readAsDataURL(file);
+                } else if (file) {
+                    alert('请选择 JPG 或 PNG 格式的图片');
+                    photoInput.value = '';
+                }
+            });
+        }
+
+        const resetBtn = document.querySelector('.btn-secondary');
+        const form = document.getElementById('personalForm');
+        if (resetBtn && form) {
+            resetBtn.addEventListener('click', function(e) {
+                setTimeout(() => {
+                    if (profileImg) {
+                        profileImg.src = 'photos.jpg';
+                        profileImg.onerror = function() {
+                            this.onerror = null;
+                            this.src = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22240%22%20viewBox%3D%220%200%20180%20240%22%3E%3Crect%20width%3D%22180%22%20height%3D%22240%22%20fill%3D%22%23f4f6fa%22%2F%3E%3Ctext%20x%3D%2290%22%20y%3D%22120%22%20font-size%3D%2212%22%20fill%3D%22%23999%22%20text-anchor%3D%22middle%22%3E暂无照片%3C%2Ftext%3E%3C%2Fsvg%3E';
+                        };
+                    }
+                    const fileInput = document.getElementById('photoInput');
+                    if (fileInput) fileInput.value = '';
+                }, 10);
+            });
+        }
+
+        const submitBtn = document.querySelector('.btn-primary');
+        if (submitBtn && form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('您的信息已提交（演示模式）\n表格内容可编辑，照片支持上传');
+            });
+        }
+        if(profileImg && (!profileImg.complete || profileImg.naturalWidth === 0)) {
+            if(profileImg.src !== 'photos.jpg') profileImg.onerror();
+        }
+    })();
+</script>
+</body>
+</html>
