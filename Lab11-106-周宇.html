@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>小球斜坡运动</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            margin: 50px;
+            position: relative;
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        /* 斜坡样式：旋转实现倾斜 */
+        .slope {
+            position: absolute;
+            width: 300px;
+            height: 8px;
+            background: #666;
+            top: 150px;
+            left: 50px;
+            /* 旋转20度，形成斜坡 */
+            transform: rotate(20deg);
+            /* 让旋转中心点在左端，更符合斜坡逻辑 */
+            transform-origin: left center;
+        }
+
+        /* 小球样式 */
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #f40;
+            border-radius: 50%;
+            /* 初始位置：斜坡顶端 */
+            top: 140px;
+            left: 320px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="slope"></div>
+        <div class="ball" id="ball"></div>
+    </div>
+
+    <script>
+        // 获取小球元素
+        const ball = document.getElementById('ball');
+        // 小球初始坐标
+        let x = 320;
+        let y = 140;
+        // 运动步长（控制速度）
+        const step = 2;
+        // 斜坡角度 20°
+        const angle = 20 * Math.PI / 180;
+
+        // 定时器：每10毫秒执行一次，实现连续运动
+        const timer = setInterval(() => {
+            // 沿斜坡向左下方运动（x减小，y增大）
+            x -= step * Math.cos(angle);
+            y += step * Math.sin(angle);
+
+            // 更新小球位置
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+
+            // 停止条件：到达斜坡底端
+            if (x <= 50) {
+                clearInterval(timer);
+            }
+        }, 10);
+    </script>
+</body>
+</html>
