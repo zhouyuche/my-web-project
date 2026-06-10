@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>小球斜坡运动</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .control {
+            margin: 20px 50px;
+            font-size: 16px;
+        }
+        select {
+            margin-left: 10px;
+            padding: 4px 8px;
+            font-size: 14px;
+        }
+        .container {
+            margin: 0 50px;
+            position: relative;
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        /* 斜坡样式：旋转实现倾斜 */
+        .slope {
+            position: absolute;
+            width: 300px;
+            height: 8px;
+            background: #666;
+            top: 150px;
+            left: 50px;
+            /* 旋转20度，形成斜坡 */
+            transform: rotate(20deg);
+            /* 让旋转中心点在左端，更符合斜坡逻辑 */
+            transform-origin: left center;
+        }
+
+        /* 小球样式 */
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #f40;
+            border-radius: 50%;
+            /* 初始位置：斜坡顶端 */
+            top: 140px;
+            left: 320px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 速度选择下拉框 -->
+    <div class="control">
+        <label for="speedSelect">选择运动速度：</label>
+        <select id="speedSelect">
+            <option value="1">慢速</option>
+            <option value="2">中速</option>
+            <option value="4">快速</option>
+            <option value="6">极速</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <div class="slope"></div>
+        <div class="ball" id="ball"></div>
+    </div>
+
+    <script>
+        const ball = document.getElementById('ball');
+        const speedSelect = document.getElementById('speedSelect');
+        let timer = null; // 定时器变量
+
+        // 斜坡角度 20°
+        const angle = 20 * Math.PI / 180;
+        const intervalTime = 10; // 动画帧间隔(ms)，固定不变
+
+        // 重置小球到初始位置
+        function resetBall() {
+            ball.style.left = '320px';
+            ball.style.top = '140px';
+        }
+
+        // 启动小球运动
+        function startMove(step) {
+            // 先清除旧定时器，防止多重动画叠加
+            if (timer) clearInterval(timer);
+            // 重置位置
+            let x = 320;
+            let y = 140;
+
+            timer = setInterval(() => {
+                x -= step * Math.cos(angle);
+                y += step * Math.sin(angle);
+
+                ball.style.left = x + 'px';
+                ball.style.top = y + 'px';
+
+                // 到达底端停止
+                if (x <= 50) {
+                    clearInterval(timer);
+                }
+            }, intervalTime);
+        }
+
+        // 初始化：读取本地存储的速度
+        function init() {
+            // 获取本地存储的速度，无数据则默认 2（中速）
+            let saveSpeed = localStorage.getItem('ballSpeed') || 2;
+            saveSpeed = Number(saveSpeed);
+            // 下拉框选中对应项
+            speedSelect.value = saveSpeed;
+            // 启动动画
+            startMove(saveSpeed);
+        }
+
+        // 下拉框切换事件：更新速度 + 本地存储 + 重启动画
+        speedSelect.addEventListener('change', function () {
+            let currentSpeed = Number(this.value);
+            // 存入本地存储
+            localStorage.setItem('ballSpeed', currentSpeed);
+            // 重新开始运动
+            startMove(currentSpeed);
+        });
+
+        // 页面加载完成初始化
+        init();
+    </script>
+</body>
+</html>
