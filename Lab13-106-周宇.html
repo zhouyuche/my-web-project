@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 60px;
+            background: #eee;
+        }
+        /* 图片父容器 允许放大镜完全溢出 */
+        .img-wrap {
+            width: 400px;
+            height: 300px;
+            position: relative;
+            cursor: crosshair;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 12px #ccc;
+            overflow: visible;
+        }
+        /* 预览小图 */
+        .small-img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        /* 圆形放大镜 */
+        .magnifier {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 2px #999, inset 0 0 25px rgba(0,0,0,0.15);
+            position: absolute;
+            pointer-events: none;
+            display: none;
+            overflow: hidden;
+            z-index: 9999;
+        }
+        /* 放大内部大图 */
+        .big-img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform-origin: 0 0;
+        }
+        .tip {
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="img-wrap" id="wrap">
+        <img class="small-img" id="smallImg" src="https://picsum.photos/id/10/400/300" alt="预览图">
+        <div class="magnifier" id="mag">
+            <img class="big-img" id="bigImg" src="https://picsum.photos/id/10/1200/900" alt="高清大图">
+        </div>
+    </div>
+
+
+    <script>
+        const wrap = document.getElementById('wrap');
+        const mag = document.getElementById('mag');
+        const bigImg = document.getElementById('bigImg');
+        const smallImg = document.getElementById('smallImg');
+
+        // 配置参数
+        let scale = 2;
+        const minScale = 1.2;
+        const maxScale = 4;
+        const magSize = 180;
+        const halfMag = magSize / 2;
+
+        // 大图真实宽高（大图是小图3倍）
+        const smallW = 400;
+        const smallH = 300;
+        const bigW = 1200;
+        const bigH = 900;
+
+        // 鼠标移入显示放大镜
+        wrap.addEventListener('mouseenter', () => {
+            mag.style.display = 'block';
+        })
+        wrap.addEventListener('mouseleave', () => {
+            mag.style.display = 'none';
+        })
+
+        wrap.addEventListener('mousemove', (e) => {
+            const rect = wrap.getBoundingClientRect();
+            // 鼠标在小图内的坐标
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // 放大镜跟随鼠标，完全自由不限制边界
+            mag.style.left = (mouseX - halfMag) + 'px';
+            mag.style.top = (mouseY - halfMag) + 'px';
+
+            // 计算大图需要偏移的距离
+            // 映射关系：小图1px = 大图 (bigW / smallW) px
+            const ratio = bigW / smallW;
+            // 放大后的局部偏移
+            let imgX = -(mouseX * ratio * scale - halfMag);
+            let imgY = -(mouseY * ratio * scale - halfMag);
+
+            // ====== 核心修复：限制大图偏移边界，底部不会空白 ======
+            // 大图最大可向左偏移值
+            const maxOffsetX = -(bigW * scale - magSize);
+            // 大图最大可向上偏移值
+            const maxOffsetY = -(bigH * scale - magSize);
+            // 边界锁定，超出范围就卡住，不会出现空白
+            imgX = Math.min(0, Math.max(imgX, maxOffsetX));
+            imgY = Math.min(0, Math.max(imgY, maxOffsetY));
+
+            bigImg.style.transform = `translate(${imgX}px, ${imgY}px) scale(${scale})`;
+        })
+
+        // 滚轮缩放
+        wrap.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                scale += 0.15;
+            } else {
+                scale -= 0.15;
+            }
+            scale = Math.max(minScale, Math.min(scale, maxScale));
+        })
+    </script>
+</body>
+</html>
